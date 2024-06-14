@@ -20,19 +20,19 @@ namespace PetShop.Controllers {
         }
 
         [HttpPost]
-        public  ActionResult Create([FromBody] Animal animal) {
+        public async Task <ActionResult> Create([FromBody] Animal animal) {
             try {
-                _animaisRepository.Create(animal);
+               await _animaisRepository.Create(animal);
                 return Ok("Animal criado com sucesso");
             }
             catch (Exception e) {
                 return BadRequest(e.Message);
             }
         }
-        [HttpDelete("{Id}")]
-        public  ActionResult Delete(int id) {
+        [HttpDelete("{id}")]
+        public async Task <ActionResult> Delete(int id) {
             try {
-                _animaisRepository.Delete(id);
+               await _animaisRepository.Delete(id);
                 return Ok("Animal deletado com sucesso" );
 
             }
@@ -40,12 +40,13 @@ namespace PetShop.Controllers {
                 return BadRequest(e.Message);
             }
         }
-        [HttpPut("{Id}")]
+        [HttpPut("{id}")]
 
-        public  ActionResult Update([FromRoute] int id, [FromBody] Animal animal) {
+        public async Task<ActionResult> Update([FromRoute] int id, [FromBody] Animal animal) {
 
             try {
-                return Ok( _animaisRepository.Update(id, animal));
+               await _animaisRepository.Update(id, animal);
+                return Ok("Animal atualizado com sucesso");
 
             }
             catch (Exception e) {
@@ -53,10 +54,11 @@ namespace PetShop.Controllers {
             }
         }
         [HttpGet("{id}")]
-        public  ActionResult Get([FromRoute]int id) {
+        public async Task <ActionResult> Get([FromRoute]int id) {
 
             try {
-                return Ok(_animaisRepository.Get(id));
+                await _animaisRepository.Get(id);
+                return Ok();
             }
             catch (Exception e) {
                 return BadRequest(e.Message);
