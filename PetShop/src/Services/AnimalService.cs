@@ -4,31 +4,31 @@ using PetShop.src.Contrato.Service;
 
 namespace PetShop.src.Services;
 public class AnimalService : IAnimaisService {
-    private readonly IAnimaisRepository _animalRepository;
+    private readonly IAnimailRepository _animalRepository;
 
-    public AnimalService(IAnimaisRepository animalRepository) {
+    public AnimalService(IAnimailRepository animalRepository) {
         _animalRepository = animalRepository;
 
     }
-    
-    public void Create(Animal animal) {
-          _animalRepository.Create(animal);  
+
+    public async Task Create(Animal animal) {
+        await _animalRepository.Create(animal);
     }
 
-    public void Delete(int id) {
-        _animalRepository.Delete(id);
+    public async Task Delete(int id) {
+        await _animalRepository.Delete(id);
     }
 
-    public Animal Get(int id) {
-       return _animalRepository.Get(id);
-        
+    public Task<Animal> Get(int id) {
+        return _animalRepository.Get(id);
+
     }
 
-    public List<Animal> List() {
+    public Task<List<Animal>> List() {
         return _animalRepository.List();
     }
 
-    public void Update(int id, Animal animal) {
-        _animalRepository.Update(id, animal);
+    public async Task Update(int id, Animal animal) {
+        await _animalRepository.Update(id, animal);
     }
 }

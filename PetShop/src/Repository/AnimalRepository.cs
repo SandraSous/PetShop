@@ -1,40 +1,45 @@
-﻿using PetShop.Models;
+﻿using Dapper;
+using PetShop.Data;
+using PetShop.Models;
 using PetShop.src.Contrato.Repository;
+using System.Reflection.Metadata.Ecma335;
 
 namespace PetShop.src.Repository {
-    public class AnimalRepository : IAnimaisRepository {
-        private List<Animal> _animais = [
-            new Animal{
-                 id = 1,
-                 especie = "Cachorro",
-                 raca = "Vira lata"
-             }
-             ];
-        public void Create(Animal animal) {
-            _animais.Add(animal);
+    public class AnimalRepository : IAnimailRepository {
+
+        private readonly DapperContext _dapperContext;
+
+        public AnimalRepository(DapperContext dapperContext) {
+            _dapperContext = dapperContext;
         }
 
-        public void Delete(int id) {
-            var animal = _animais.FirstOrDefault(x => x.id == id);
-            _animais.Remove(animal!);
+        public Task Create(Animal animal) {
+            throw new NotImplementedException();
         }
 
-        public Animal Get(int id) {
-            var animal = _animais.FirstOrDefault(x => x.id == id);
-            return (animal!);
+        public Task Delete(int id) {
+            throw new NotImplementedException();
         }
 
-        public List<Animal> List() {
-            return  _animais;
+        public Task<Animal> Get(int id) {
+            throw new NotImplementedException();
         }
 
-        public Animal Update(int id, Animal animal) {
-            var animalDb = _animais.Where(x => x.id == id).FirstOrDefault();
-            animalDb!.raca = animal.raca;
-            animalDb.especie = animal.especie;
-            return animalDb;
-        }
+        public async Task <List<Animal>> List() {
+            string query = @"SELECT id
+              ,raca
+              ,especie
+              FROM Animal";
 
-       
+            using (var connection = _dapperContext.CreateConnection()) {
+                var listaAnimais =  await connection.QueryAsync<Animal>(query);
+                return listaAnimais.ToList();
+            }
+        }
+        
+
+        public Task Update(int id, Animal animal) {
+            throw new NotImplementedException();
+        }
     }
 }

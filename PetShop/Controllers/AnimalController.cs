@@ -13,8 +13,8 @@ namespace PetShop.Controllers {
         //public AnimalController(IAnimaisService animal) {
         //    _animal = animal;
         //}
-        private readonly IAnimaisRepository _animaisRepository;
-        public AnimalController(IAnimaisRepository animaisRepository)
+        private readonly IAnimailRepository _animaisRepository;
+        public AnimalController(IAnimailRepository animaisRepository)
         {
           _animaisRepository = animaisRepository;
         }
@@ -64,9 +64,10 @@ namespace PetShop.Controllers {
         }
 
         [HttpGet]
-        public ActionResult List() {
+        public async Task <ActionResult> List() {
             try {
-                return Ok( _animaisRepository.List());
+                var result = await _animaisRepository.List();
+                return Ok(result );
             }
             catch (Exception e) {
                 return BadRequest(e.Message);
