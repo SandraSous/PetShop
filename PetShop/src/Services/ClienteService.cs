@@ -1,6 +1,7 @@
 ﻿using PetShop.Models;
 using PetShop.src.Contrato.Repository;
 using PetShop.src.Contrato.Service;
+using PetShop.src.Repository;
 
 namespace PetShop.src.Services;
 public class ClienteService : IClienteService {
@@ -8,26 +9,27 @@ public class ClienteService : IClienteService {
 
     public ClienteService(IClienteRepository clienteRepository) {
         _clienteRepository = clienteRepository;
-    }
 
-    public void Create(Cliente cliente) {
-        _clienteRepository.Create(cliente);
     }
-
-    public void Delete(int id) {
     
-        _clienteRepository.Delete(id);
+    public async Task Create(Cliente cliente) {
+       await _clienteRepository.Create(cliente);
     }
 
-    public Cliente Get(int id) {
-        return _clienteRepository.Get(id);
+    public async Task Delete(int id) {
+    
+      await  _clienteRepository.Delete(id);
     }
 
-    public  List<Cliente> List() {
-       return _clienteRepository.List();
+    public async Task<Cliente?> Get(int id) {
+        return await _clienteRepository.Get(id);
     }
 
-    public void Update(int id, Cliente cliente) {
-        _clienteRepository.Update(id, cliente);
+    public  async Task<List<Cliente>> List() {
+       return await _clienteRepository.List();
+    }
+
+    public async Task Update(int id, Cliente cliente) {
+       await _clienteRepository.Update(id, cliente);
     }
 }

@@ -1,12 +1,11 @@
 ﻿using PetShop.Models;
 
 namespace PetShop.src.Contrato.Service;
-public interface IServicoService
-{
-    void Create(Servico servico);
-    void Update(int id, Servico servico);
-    void Delete(int id);
-    Servico Get(int id);
-    List<Servico> List();
-
+public interface IServicoService {
+    Task Create(Servico servico);
+    Task Update(int Id, Servico servico);
+    Task Delete(int Id);
+    Task<Servico?> Get(int Id);
+    Task<List<Servico>> List();
+    Task<IEnumerable<Servico>?> GetServicoByCliente(int Id);
 }

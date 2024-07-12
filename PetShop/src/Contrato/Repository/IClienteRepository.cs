@@ -1,13 +1,12 @@
 ﻿using PetShop.Models;
 
 namespace PetShop.src.Contrato.Repository;
-public interface IClienteRepository
-{
-    void Create(Cliente cliente);
-    void Update(int id, Cliente cliente);
-    void Delete(int id);
-    Cliente Get(int id);
-    List<Cliente> List();
-    
+public interface IClienteRepository {
+    Task Create(Cliente cliente);
+    Task Update(int Id, Cliente cliente);
+    Task Delete(int Id);
+    Task<Cliente?> Get(int Id);
+   Task <List<Cliente>> List();
+
 }
 

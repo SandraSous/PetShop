@@ -9,43 +9,39 @@ namespace PetShop.Controllers {
     [ApiController]
     [Route("api/[controller]")]
     public class AnimalController : ControllerBase {
-        //private readonly IAnimaisService _animal;
-        //public AnimalController(IAnimaisService animal) {
-        //    _animal = animal;
-        //}
-        private readonly IAnimailRepository _animaisRepository;
-        public AnimalController(IAnimailRepository animaisRepository)
-        {
-          _animaisRepository = animaisRepository;
+        private readonly IAnimaisService _animal;
+        public AnimalController(IAnimaisService animal) {
+            _animal = animal;
         }
+       
 
         [HttpPost]
-        public async Task <ActionResult> Create([FromBody] Animal animal) {
+        public async Task<ActionResult> Create([FromBody] Animal animal) {
             try {
-               await _animaisRepository.Create(animal);
+                await _animal.Create(animal);
                 return Ok("Animal criado com sucesso");
             }
             catch (Exception e) {
                 return BadRequest(e.Message);
             }
         }
-        [HttpDelete("{id}")]
-        public async Task <ActionResult> Delete(int id) {
+        [HttpDelete("{Id}")]
+        public async Task<ActionResult> Delete(int Id) {
             try {
-               await _animaisRepository.Delete(id);
-                return Ok("Animal deletado com sucesso" );
+                await _animal.Delete(Id);
+                return Ok("Animal deletado com sucesso");
 
             }
             catch (Exception e) {
                 return BadRequest(e.Message);
             }
         }
-        [HttpPut("{id}")]
+        [HttpPut("{Id}")]
 
-        public async Task<ActionResult> Update([FromRoute] int id, [FromBody] Animal animal) {
+        public async Task<ActionResult> Update([FromRoute] int Id, [FromBody] Animal animal) {
 
             try {
-               await _animaisRepository.Update(id, animal);
+                await _animal.Update(Id, animal);
                 return Ok("Animal atualizado com sucesso");
 
             }
@@ -53,12 +49,23 @@ namespace PetShop.Controllers {
                 return BadRequest(e.Message);
             }
         }
-        [HttpGet("{id}")]
-        public async Task <ActionResult> Get([FromRoute]int id) {
+        [HttpGet("{Id}")]
+        public async Task<ActionResult> Get([FromRoute] int Id) {
 
             try {
-                await _animaisRepository.Get(id);
-                return Ok();
+                var result = await _animal.Get(Id);
+                return Ok(result);
+            }
+            catch (Exception e) {
+                return BadRequest(e.Message);
+            }
+        }
+        [HttpGet("Cliente/{Id}")]
+        public async Task<ActionResult> GetAnimalByClienteId([FromRoute] int Id) {
+
+            try {
+                var result = await _animal.GetAnimalByCliente(Id);
+                return Ok(result);
             }
             catch (Exception e) {
                 return BadRequest(e.Message);
@@ -66,14 +73,16 @@ namespace PetShop.Controllers {
         }
 
         [HttpGet]
-        public async Task <ActionResult> List() {
+        public async Task<ActionResult> List() {
             try {
-                var result = await _animaisRepository.List();
-                return Ok(result );
+                var result = await _animal.List();
+                return Ok(result);
             }
             catch (Exception e) {
                 return BadRequest(e.Message);
             }
+
+            
         }
 
     }

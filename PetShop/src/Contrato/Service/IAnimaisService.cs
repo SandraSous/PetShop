@@ -1,11 +1,11 @@
 ﻿using PetShop.Models;
 
 namespace PetShop.src.Contrato.Service;
-public interface IAnimaisService
-{
+public interface IAnimaisService {
     Task Create(Animal animal);
-    Task Update(int id, Animal animal);
-    Task Delete(int id);
-    Task<Animal> Get(int id);
-   Task <List<Animal>> List();
+    Task Update(int Id, Animal animal);
+    Task Delete(int Id);
+    Task<Animal?> Get(int Id);
+    Task<List<Animal>> List();
+    Task<IEnumerable<Animal>?> GetAnimalByCliente(int Id);
 }

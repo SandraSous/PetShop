@@ -2,32 +2,47 @@
 using Microsoft.AspNetCore.Mvc;
 using PetShop.Models;
 using PetShop.src.Contrato.Repository;
+using PetShop.src.Contrato.Service;
 using PetShop.src.Repository;
+using PetShop.src.Services;
 
 namespace PetShop.Controllers {
     [Route("api/[controller]")]
     [ApiController]
     public class ServicoController : ControllerBase {
-        private readonly IServicoRepository _servicoRepository;
-        public ServicoController(IServicoRepository servicoRepository) {
-            _servicoRepository = servicoRepository;
+        private readonly IServicoService _servico;
+        public ServicoController(IServicoService servico) {
+            _servico = servico;
 
         }
+
+        [HttpGet("Cliente/{Id}")]
+        public async Task<ActionResult> GetAnimalByClienteId([FromRoute] int Id) {
+
+            try {
+                var result = await _servico.GetServicoByCliente(Id);
+                return Ok(result);
+            }
+            catch (Exception e) {
+                return BadRequest(e.Message);
+            }
+        }
+
         [HttpPost]
 
-        public ActionResult Create([FromBody] Servico servico) {
+        public async Task<ActionResult> Create([FromBody] Servico servico) {
             try {
-                _servicoRepository.Create(servico);
+                _servico.Create(servico);
                 return Ok("Serviço cadastrado com sucesso");
             }
             catch (Exception e) {
                 return BadRequest(e.Message);
             }
         }
-        [HttpDelete("{id}")]
-        public ActionResult Delete([FromRoute] int id) {
+        [HttpDelete("{Id}")]
+        public async Task<ActionResult> Delete([FromRoute] int Id) {
             try {
-                _servicoRepository.Delete(id);
+                await _servico.Delete(Id);
                 return Ok("Serviço excluido com sucesso");
 
             }
@@ -35,31 +50,34 @@ namespace PetShop.Controllers {
                 return BadRequest(e.Message);
             }
         }
-        [HttpPut("{id}")]
+        [HttpPut("{Id}")]
 
-        public ActionResult Update([FromRoute] int id, [FromBody] Servico servico) {
+        public async Task<ActionResult> Update([FromRoute] int Id, [FromBody] Servico servico) {
 
             try {
-                return Ok(_servicoRepository.Update(id, servico));
+                await _servico.Update(Id, servico);
+                return Ok("Servico atualizado com sucesso");
 
             }
             catch (Exception e) {
                 return BadRequest(e.Message);
             }
         }
-        [HttpGet("{id}")]
-        public ActionResult Get(int id) {
+        [HttpGet("{Id}")]
+        public async Task<ActionResult> Get(int Id) {
             try {
-                return Ok(_servicoRepository.Get(id));
+                var result = await _servico.Get(Id);
+                return Ok(result);
             }
             catch (Exception e) {
                 return BadRequest(e.Message);
             }
         }
         [HttpGet]
-        public ActionResult List() {
+        public async Task<ActionResult> List() {
             try {
-                return Ok(_servicoRepository.List());
+                var result = await _servico.List();
+                return Ok(result);
             }
             catch (Exception e) {
                 return BadRequest(e.Message);

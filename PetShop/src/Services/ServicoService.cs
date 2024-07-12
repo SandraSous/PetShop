@@ -9,23 +9,27 @@ public class ServicoService : IServicoService {
     public ServicoService(IServicoRepository servicoRepository) {
         _servicoRepository = servicoRepository;
     }
-    public void Create(Servico servico) {
-        _servicoRepository.Create(servico);
+    public async Task Create(Servico servico) {
+       await _servicoRepository.Create(servico);
     }
 
-    public void Delete(int id) {
-        _servicoRepository.Delete(id);
+    public async Task Delete(int id) {
+       await _servicoRepository.Delete(id);
     }
 
-    public Servico Get(int id) {
-        return _servicoRepository.Get(id);
+    public async Task<Servico?> Get(int id) {
+        return await _servicoRepository.Get(id);
     }
 
-    public List<Servico> List() {
-        return _servicoRepository.List();
+    public async Task<IEnumerable<Servico>?> GetServicoByCliente(int Id) {
+        return await _servicoRepository.GetServicoByCliente(Id);
     }
 
-    public void Update(int id, Servico servico) {
-        _servicoRepository.Update(id, servico);
+    public async Task< List<Servico>> List() {
+        return await _servicoRepository.List();
+    }
+
+    public async Task Update(int id, Servico servico) {
+        await _servicoRepository.Update(id, servico);
     }
 }

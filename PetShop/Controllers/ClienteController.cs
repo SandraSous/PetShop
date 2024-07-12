@@ -9,27 +9,27 @@ namespace PetShop.Controllers {
     [ApiController]
     public class ClienteController : ControllerBase {
 
-        private readonly IClienteService _clienteService;
+        private readonly src.Contrato.Service.IClienteService _cliente;
 
-        public ClienteController(IClienteService clienteService) {
+        public ClienteController(src.Contrato.Service.IClienteService cliente) {
 
-            _clienteService = clienteService;
+            _cliente = cliente;
         }
         [HttpPost]
 
-        public ActionResult Create([FromBody] Cliente cliente) {
+        public async Task <ActionResult> Create([FromBody] Cliente cliente) {
             try {
-                _clienteService.Create(cliente);
+               await _cliente.Create(cliente);
                 return Ok("Cliente cadastrado com sucesso");
             }
             catch (Exception e) {
                 return BadRequest(e.Message);
             }
         }
-        [HttpDelete("{id}")]
-        public  ActionResult Delete( [FromRoute] int id) {
+        [HttpDelete("{Id}")]
+        public async Task< ActionResult> Delete( [FromRoute] int Id) {
             try {
-                _clienteService.Delete(id);
+                await _cliente.Delete(Id);
                 return Ok("Cliente excluido com sucesso");
 
             }
@@ -37,12 +37,12 @@ namespace PetShop.Controllers {
                 return BadRequest(e.Message);
             }
         }
-        [HttpPut("{id}")]
+        [HttpPut("{Id}")]
 
-        public  ActionResult Update([FromRoute] int id, [FromBody] Cliente cliente) {
+        public async  Task<ActionResult> Update([FromRoute] int Id, [FromBody] Cliente cliente) {
 
             try {
-                _clienteService.Update(id, cliente);
+               await _cliente.Update(Id, cliente);
                 return Ok("Cliente atualizado com sucesso");
 
             }
@@ -50,19 +50,21 @@ namespace PetShop.Controllers {
                 return BadRequest(e.Message);
             }
         }
-        [HttpGet("{id}")]
-        public  ActionResult Get(int id) {
+        [HttpGet("{Id}")]
+        public async Task<ActionResult> Get([FromRoute] int Id) {
             try {
-                return Ok( _clienteService.Get(id));
+                var result = await _cliente.Get(Id);
+                return Ok(result);
             }
             catch (Exception e) {
                 return BadRequest(e.Message);
             }
         }
         [HttpGet]
-        public  ActionResult List() {
+        public async Task<ActionResult> List() {
             try {
-                return Ok( _clienteService.List());
+                var result = await _cliente.List();
+                return Ok(result);
             }
             catch (Exception e) {
                 return BadRequest(e.Message);

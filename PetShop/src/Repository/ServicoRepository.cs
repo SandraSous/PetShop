@@ -1,46 +1,80 @@
-﻿using PetShop.Models;
+﻿using Dapper;
+using PetShop.Data;
+using PetShop.Models;
 using PetShop.src.Contrato.Repository;
 
 namespace PetShop.src.Repository;
 public class ServicoRepository : IServicoRepository {
-    private List<Servico> _servicos = [
-           new Servico{
-
-             id = 1,
-            descricao = "Sara",
-            valor = 10
 
 
+    private readonly DapperContext _dapperContext;
+
+    public ServicoRepository(DapperContext dapperContext) {
+        _dapperContext = dapperContext;
+    }
+
+    public async Task Create(Servico servico) {
+        using (var connection = _dapperContext.CreateConnection()) {
+            var sql = "INSERT INTO Servico (Descricao, Valor) VALUES (@Descricao, @Valor)";
+            await connection.ExecuteAsync(sql, servico);
+
+        }
+    }
+
+    public async Task Delete(int id) {
+        using (var connection = _dapperContext.CreateConnection()) {
+            var sql = "DELETE FROM Servico WHERE Id = @Id";
+            await connection.ExecuteAsync(sql, new { id });
+        }
+    }
+
+    public async Task<Servico?> Get(int id) {
+        using (var connection = _dapperContext.CreateConnection()) {
+            var query = @"SELECT 
+                 Id   
+                ,Descricao
+                ,Valor
+                FROM Servico WHERE Id = @Id";
+            var servicos = await connection.QueryAsync<Servico>(query, new { id });
+            if (servicos != null) {
+                return servicos?.FirstOrDefault();
             }
-           ];
-
-    public void Create(Servico servico) {
-        _servicos.Add(servico!);
+            return null;
+        }
     }
 
-    public void Delete(int id) {
-        var servico = _servicos.FirstOrDefault(x => x.id == id);
-        _servicos.Remove(servico!);
-    }
+    public async Task<IEnumerable<Servico>> GetServicoByCliente(int Id) {
 
-    public Servico Get(int id) {
-        var servico = _servicos.FirstOrDefault(x => x.id == id);
-        return servico!;
-    }
+        string query = @"SELECT *
+              
+              FROM Servico Where ClienteId=@Id";
 
-    public List<Servico> List() {
+        using (var connection = _dapperContext.CreateConnection()) {
 
-        return _servicos;
-    }
+            return await connection.QueryAsync<Servico>(query, new { Id });
 
-    public Servico Update(int id, Servico servico) {
-        var servicoDb = _servicos.Where(x => x.id == id).FirstOrDefault();
-        servicoDb!.id = servico.id;
-        servicoDb.descricao = servico.descricao;
-        servicoDb.valor = servico.valor;
-        return servicoDb;
+        }
 
     }
 
+    public async Task<List<Servico>> List() {
+        string query = @"SELECT Id
+              ,Descricao
+              ,Valor
+              FROM servico";
 
+        using (var connection = _dapperContext.CreateConnection()) {
+            var listaServicos = await connection.QueryAsync<Servico>(query);
+            return listaServicos.ToList();
+        }
+    }
+
+    public async Task Update(int id, Servico servico) {
+        using (var connection = _dapperContext.CreateConnection()) {
+            await connection.ExecuteAsync(
+                "UPDATE Servico SET Descricao=@Descricao, Valor = @Valor WHERE Id=@Id",
+                new { id, servico.Descricao });
+
+        }
+    }
 }

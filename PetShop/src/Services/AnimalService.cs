@@ -1,12 +1,13 @@
-﻿using PetShop.Models;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using PetShop.Models;
 using PetShop.src.Contrato.Repository;
 using PetShop.src.Contrato.Service;
 
 namespace PetShop.src.Services;
 public class AnimalService : IAnimaisService {
-    private readonly IAnimailRepository _animalRepository;
+    private readonly IAnimalRepository _animalRepository;
 
-    public AnimalService(IAnimailRepository animalRepository) {
+    public AnimalService(IAnimalRepository animalRepository) {
         _animalRepository = animalRepository;
 
     }
@@ -19,16 +20,22 @@ public class AnimalService : IAnimaisService {
         await _animalRepository.Delete(id);
     }
 
-    public Task<Animal> Get(int id) {
-        return _animalRepository.Get(id);
+    public async Task<Animal?> Get(int id) {
+
+        return await _animalRepository.Get(id);
 
     }
+    public async Task<IEnumerable<Animal>?> GetAnimalByCliente(int id) {
 
-    public Task<List<Animal>> List() {
-        return _animalRepository.List();
+        return await _animalRepository.GetAnimalByCliente(id);
+    }
+    public async Task<List<Animal>> List() {
+
+        return await _animalRepository.List();
     }
 
     public async Task Update(int id, Animal animal) {
+
         await _animalRepository.Update(id, animal);
     }
 }

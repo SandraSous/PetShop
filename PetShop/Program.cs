@@ -12,10 +12,10 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddScoped<IAnimailRepository, AnimalRepository>();
-builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
+builder.Services.AddScoped<IAnimalRepository, AnimalRepository>();
+builder.Services.AddScoped<PetShop.src.Contrato.Repository.IClienteRepository, ClienteRepository>();
 builder.Services.AddScoped<IServicoRepository, ServicoRepository>();
-builder.Services.AddScoped<IClienteService, ClienteService>();
+builder.Services.AddScoped<PetShop.src.Contrato.Service.IClienteService, ClienteService>();
 builder.Services.AddScoped<IAnimaisService, AnimalService>();
 builder.Services.AddScoped<IServicoService, ServicoService>();
 builder.Services.AddSingleton<DapperContext>();

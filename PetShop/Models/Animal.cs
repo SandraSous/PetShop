@@ -1,7 +1,11 @@
 ﻿namespace PetShop.Models {
     public class Animal {
-        public int id { get; set; }
-        public string? raca { get; set; }
-        public string? especie { get; set; }
+       
+        public int Id  { get; set; }
+        public string? Raca { get; set; }
+
+        public string? Especie { get; set; }
+        public int ClienteId { get; set; }
+        public Cliente? Cliente { get; set; }
     }
 }

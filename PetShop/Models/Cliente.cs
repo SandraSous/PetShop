@@ -1,6 +1,8 @@
 ﻿namespace PetShop.Models; 
 public class Cliente {
-    public int id { get; set; }
-    public string? nome { get; set; }
-    public string? telefone { get; set; }
+    public int Id { get; set; }
+    public string? Nome { get; set; }
+    public string? Telefone { get; set; }
+    public List<Animal>? Animais { get; set; }
+    public IEnumerable<Servico> Servico { get; set; }
 }
